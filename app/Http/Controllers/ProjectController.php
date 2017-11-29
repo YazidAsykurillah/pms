@@ -10,6 +10,7 @@ use Carbon\Carbon;
 
 //form requests
 use App\Http\Requests\StoreProjectRequest;
+use App\Http\Requests\UpdateProjectRequest;
 
 //events
 use Event;
@@ -73,7 +74,9 @@ class ProjectController extends Controller
      */
     public function show($id)
     {
-        //
+        $project = Project::findOrfail($id);
+        return view('project.show')
+            ->with('project', $project);
     }
 
     /**
@@ -84,7 +87,9 @@ class ProjectController extends Controller
      */
     public function edit($id)
     {
-        //
+        $project = Project::findOrfail($id);
+        return view('project.edit')
+            ->with('project', $project);
     }
 
     /**
@@ -94,9 +99,17 @@ class ProjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateProjectRequest $request, $id)
     {
-        //
+        $project = Project::findOrfail($id);
+        $project->client_id = $request->client_id;
+        $project->name = $request->name;
+        $project->description = $request->description;
+        $project->project_manager_id = $request->project_manager_id;
+        $project->save();
+
+        return redirect('project/'.$id)
+            ->with('successMessage', "Project has been created");
     }
 
     /**

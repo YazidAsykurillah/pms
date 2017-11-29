@@ -95,10 +95,10 @@ class DatatablesController extends Controller
         
         $data_projects = Datatables::of($projects)
             ->addColumn('client', function($projects){
-                return $projects->client->name;
+                return $projects->client ? $projects->client->name : NULL;
             })
             ->addColumn('project_manager', function($projects){
-                return $projects->project_manager->name;
+                return $projects->project_manager ? $projects->project_manager->name : NULL;
             })
             ->addColumn('actions', function($projects){
                     $actions_html ='<a href="'.url('project/'.$projects->id.'').'" class="btn" title="Click to view the detail">';
